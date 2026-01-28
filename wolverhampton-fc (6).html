@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    LOGO SETUP INSTRUCTIONS - SIMPLE METHOD:
+    
+    OPTION 1 (Easiest):
+    1. Copy your logo: C:\Users\Bryan.Pitcher\Pictures\Wolves-removebg-preview.png
+    2. Rename it to: wolves-logo.png
+    3. Place it in THE SAME FOLDER as this HTML file (wolverhampton-fc.html)
+    
+    Your folder should look like:
+    └── website-folder/
+        ├── wolverhampton-fc.html
+        └── wolves-logo.png  ← Same folder!
+    
+    OPTION 2 (If Option 1 doesn't work):
+    Right-click on this HTML file, look at the file path, and put the logo there.
+    
+    OPTION 3 (Subfolder):
+    1. Create a folder called "images" in the same location as this HTML file
+    2. Place wolves-logo.png inside the images folder
+    3. Change the image paths in the code from "wolves-logo.png" to "images/wolves-logo.png"
+    
+
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolverhampton FC | Cape Town Football Club</title>
+    
+    <!-- Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Optimized font loading with font-display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical images for faster rendering -->
+    <link rel="preload" as="image" href="wolves-logo.png">
+    <link rel="preload" as="image" href="cdfa-logo.png">
+    <style>
+        :root {
+            --wolves-gold: #FDB913;
+            --wolves-black: #0E0E0E;
+            --wolves-orange: #FF6B35;
+            --wolves-dark-gray: #1A1A1A;
+            --wolves-light-gray: #F5F5F5;
+            --accent-blue: #00A8E8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--wolves-black);
+            color: white;
+            overflow-x: hidden;
+            font-display: swap;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--wolves-black) 0%, var(--wolves-dark-gray) 100%);
+            overflow: hidden;
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(253, 185, 19, 0.03) 35px, rgba(253, 185, 19, 0.03) 70px);
+            pointer-events: none;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(14, 14, 14, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--wolves-gold);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(2px 2px 8px rgba(253, 185, 19, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: var(--wolves-grey);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--wolves-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--wolves-gold);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(253, 185, 19, 0.1), rgba(255, 107, 53, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(253, 185, 19, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+            border: 3px solid var(--wolves-gold);
+        }
+
+        .hero-badge img {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 20px 60px rgba(253, 185, 19, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 25px 80px rgba(253, 185, 19, 0.6);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--wolves-gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-info {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--wolves-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--wolves-dark-gray);
+            padding: 4rem 2rem;
+            border-top: 3px solid var(--wolves-gold);
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(253, 185, 19, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(253, 185, 19, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(253, 185, 19, 0.1);
+            border-color: var(--wolves-gold);
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 4rem;
+            color: var(--wolves-gold);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* News Section */
+        .news {
+            padding: 6rem 2rem;
+            background: var(--wolves-black);
+        }
+
+        /* Match Hub Section */
+        .match-hub {
+            padding: 6rem 2rem;
+            background: var(--wolves-black);
+        }
+
+        .match-hub a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(253, 185, 19, 0.5);
+        }
+
+        .section-header {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--wolves-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .news-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: var(--wolves-dark-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(253, 185, 19, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--wolves-gold);
+            box-shadow: 0 20px 40px rgba(253, 185, 19, 0.2);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--wolves-dark-gray), var(--wolves-black));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(253, 185, 19, 0.1));
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            color: var(--wolves-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .news-excerpt {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Teams Section */
+        .teams {
+            padding: 6rem 2rem;
+            background: var(--wolves-dark-gray);
+        }
+
+        /* Sponsors Section */
+        .sponsors {
+            padding: 6rem 2rem;
+            background: var(--wolves-black);
+        }
+
+        .sponsors-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .sponsor-card {
+            background: var(--wolves-dark-gray);
+            padding: 2.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(253, 185, 19, 0.1);
+            transition: all 0.3s ease;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .sponsor-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--wolves-gold);
+            box-shadow: 0 15px 40px rgba(253, 185, 19, 0.2);
+        }
+
+        .sponsor-logo {
+            max-width: 100%;
+            max-height: 80px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            filter: grayscale(100%) brightness(0) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .sponsor-card:hover .sponsor-logo {
+            filter: grayscale(0%) brightness(1) invert(0);
+        }
+
+        .sponsor-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sponsor-category {
+            font-size: 0.85rem;
+            color: var(--wolves-gold);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .become-sponsor {
+            max-width: 1400px;
+            margin: 4rem auto 0;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(253, 185, 19, 0.1), rgba(255, 107, 53, 0.1));
+            border-radius: 12px;
+            border: 2px solid var(--wolves-gold);
+            text-align: center;
+        }
+
+        .become-sponsor h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .become-sponsor p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .sponsor-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--wolves-gold);
+            color: var(--wolves-black);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .sponsor-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(253, 185, 19, 0.4);
+            background: var(--wolves-orange);
+        }
+
+        .teams-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: var(--wolves-black);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--wolves-gold);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateX(10px);
+            border-left-width: 8px;
+        }
+
+        .team-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .team-achievement {
+            color: var(--wolves-gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .team-training {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--wolves-gold), var(--wolves-orange));
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--wolves-black);
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            color: var(--wolves-black);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--wolves-black);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--wolves-black);
+            padding: 4rem 2rem 2rem;
+            border-top: 2px solid var(--wolves-gold);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            color: var(--wolves-gold);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--wolves-gold);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(253, 185, 19, 0.2);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .motto {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--wolves-gold);
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--wolves-dark-gray);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--wolves-gold);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                flex-direction: column;
+                background: rgba(14, 14, 14, 0.98);
+                padding: 2rem;
+                gap: 1.5rem;
+                transition: right 0.3s ease;
+                border-left: 2px solid var(--wolves-gold);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero-badge {
+                width: 140px;
+                height: 140px;
+            }
+
+            .hero-badge img {
+                width: 110px;
+                height: 110px;
+            }
+
+            .hero-info {
+                gap: 1.5rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="cdfa-logo.png" alt="CDFA Logo" loading="eager" decoding="async">
+                <span class="logo-text">Affiliated to Cape District Football Association</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#teams">Teams</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#matches">Matches</a></li>
+                <li><a href="#sponsors">Sponsors</a></li>
+                <li><a href="#history">History</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- <li><a href="#register">Register</a></li> -->
+             </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <img src="wolves-logo.png" alt="Wolverhampton FC" loading="eager" decoding="async">
+            </div>
+            <h1 class="hero-title">WOLVERHAMPTON<br>FOOTBALL CLUB</h1>
+            <p class="hero-subtitle">Cape Town</p>
+            <div class="hero-info">
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">Chukker Road Sports Complex, Wetton</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">082 437 5842</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">wolvesfcct60@gmail.com</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+	<div class="section-header">
+            <h2 class="section-title">Achievements</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">2023</div>
+                <div class="stat-label">•PL Winners</div>
+                <div class="stat-label">•PL Grand Challenge Winners</div>
+                <div class="stat-label">•CDFA Club of the Year</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">CAF Licensed Coaches</div>
+                <div class="stat-label">•CAF-C</div>
+				<div class="stat-label">•CAF-D</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Active Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2025</div>
+                <div class="stat-label">•U12 Red League Winners</div>
+                <div class="stat-label">•U12 Orange League Winners</div>
+                <div class="stat-label">•U14 Red League & KO Winners</div>
+                <div class="stat-label">•U14 Orange League, Grand Challenge and KO Winners</div>
+                <div class="stat-label">•CDFA Junior Team of the Year - U14</div>
+                <div class="stat-label">•CDFA Club of the Year</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motto -->
+    <div class="motto">
+        "No Substitute for Hard Work"
+    </div>
+
+    <!-- News Section -->
+    <section class="news" id="news">
+        <div class="section-header">
+            <h2 class="section-title">Latest News</h2>
+            <p class="section-subtitle">Stay Updated</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-image">⚽</div>
+                <div class="news-content">
+                    <div class="news-date">January 2026</div>
+                    <h3 class="news-title">Pre Season Kickoff</h3>
+                    <p class="news-excerpt">2026 season preparations kickoff with junior training on 2 February 2026, 17h00, at Chukker Road Sports Complex. Training will follow every Monday at Wednesday</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">🏆</div>
+                <div class="news-content">
+                    <div class="news-date">December 2025</div>
+                    <h3 class="news-title">Registration Now Open</h3>
+                    <p class="news-excerpt">2026 season registration is now open for all age groups. Join the Wolves family and be part of our winning tradition.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">👕</div>
+                <div class="news-content">
+                    <div class="news-date">November 2025</div>
+                    <h3 class="news-title">New Kit Reveal</h3>
+                    <p class="news-excerpt">Check out our stunning new home and away kits for the upcoming season, featuring our iconic gold and black colors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+	
+	  <!-- Match Hub Section -->
+    <section class="match-hub" id="matches">
+        <div class="section-header">
+            <h2 class="section-title">Match Hub</h2>
+            <p class="section-subtitle">Fixtures, Results & Standings</p>
+        </div>
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+            <div style="background: var(--wolves-dark-gray); border-radius: 12px; padding: 3rem; border: 2px solid var(--wolves-gold); text-align: center;">
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.8rem; color: white; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px;">View Our Fixtures & League Standings</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.1rem; margin-bottom: 2rem;">Check out all our match schedules, results, and league table positions on the CDFA League Republic platform.</p>
+                </div>
+                <a href="https://cdfa.leaguerepublic.com/index.html" target="_blank" style="display: inline-block; padding: 1.2rem 3rem; background: linear-gradient(135deg, var(--wolves-gold), var(--wolves-orange)); color: var(--wolves-black); font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(253, 185, 19, 0.3);">
+                    View Match Hub & Standings
+                </a>
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">Fixtures</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚽</div>
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">Results</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">Standings</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">Statistics</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teams Section -->
+    <section class="teams" id="teams">
+        <div class="section-header">
+            <h2 class="section-title">Our Teams</h2>
+            <p class="section-subtitle"></p>
+        </div>
+        
+        <!-- Executive Members -->
+        <div style="max-width: 1400px; margin: 0 auto 4rem; padding: 0 2rem;">
+            <h3 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: var(--wolves-gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; text-align: center;">Executive Members</h3>
+            <div class="teams-grid">
+                <div class="team-card">
+                    <h3 class="team-name">President</h3>
+                    <p class="team-achievement">R. Smithdorf (Snr)</p>
+                    <div class="team-training">
+                        Leadership & Vision
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Vice President</h3>
+                    <p class="team-achievement">G. Samson</p>
+                    <div class="team-training">
+                        Executive Support
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Chairman</h3>
+                    <p class="team-achievement">G. Peters</p>
+                    <div class="team-training">
+                        Club Management
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Vice Chairman</h3>
+                    <p class="team-achievement">W. Wallace (RIP)</p>
+                    <div class="team-training">
+                        Operational Oversight
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Secretary</h3>
+                    <p class="team-achievement">S. Constable</p>
+                    <div class="team-training">
+                        Administration
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Assistant Secretary</h3>
+                    <p class="team-achievement">A. Mesane</p>
+                    <div class="team-training">
+                        Administrative Support
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Treasurer</h3>
+                    <p class="team-achievement">M. Dart</p>
+                    <div class="team-training">
+                        Financial Management
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Assistant Treasurer</h3>
+                    <p class="team-achievement">W. Overmeyer</p>
+                    <div class="team-training">
+                        Financial Support
+                    </div>
+                </div>
+				<div class="team-card">
+                    <h3 class="team-name">Trustees</h3>
+                    <p class="team-achievement">D. Crouch</p>
+					<p class="team-achievement">B. Henderson</p>
+                    <div class="team-training">
+                        Caretaker of All Things
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Life Member</h3>
+                    <p class="team-achievement">L. Muller</p>
+                    <div class="team-training">
+                        Honorary Recognition
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Senior Teams -->
+        <div style="max-width: 1400px; margin: 0 auto 4rem; padding: 0 2rem;">
+            <h3 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: var(--wolves-gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; text-align: center;">Senior Teams</h3>
+            <div class="teams-grid">
+                <div class="team-card">
+                    <h3 class="team-name">Super League</h3>
+                    <p class="team-achievement">Elites. Train to Win</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> D.Allies A.Goodman R.Isaacs<br>
+                    <!-- <strong>Training:</strong><br>
+                      Mondays & Wednesdays<br>
+                      18:00 - 20:00<br>
+                       Chukker Road Sports Complex
+                    --> </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">First Division</h3>
+                    <p class="team-achievement">Competitive Excellence</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> TBC<br>
+                        <!-- <strong>Training:</strong><br>
+                      Mondays & Wednesdays<br>
+                      18:00 - 20:00<br>
+                       Chukker Road Sports Complex
+                    --> </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Under 18</h3>
+                    <p class="team-achievement">Youth Development</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> J.Gysman<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Over 35</h3>
+                    <p class="team-achievement">Masters Division</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> M.Lamohr<br>
+                       <!-- <strong>Training:</strong><br>
+                      Mondays & Wednesdays<br>
+                      18:00 - 20:00<br>
+                       Chukker Road Sports Complex
+                    --> </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Over 40</h3>
+                    <p class="team-achievement">Veterans Division</p>
+                    <div class="team-training">
+                        <strong>Manager:</strong> Vacant<br>
+                      <!-- <strong>Training:</strong><br>
+                      Mondays & Wednesdays<br>
+                      18:00 - 20:00<br>
+                       Chukker Road Sports Complex
+                    --> </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Junior Teams -->
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+            <h3 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: var(--wolves-gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; text-align: center;">Junior Teams</h3>
+            <div class="teams-grid">
+                <div class="team-card">
+                    <h3 class="team-name">Under 8</h3>
+                    <p class="team-achievement">Foundation Skills</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> B.Henderson A.Gedult<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Under 10</h3>
+                    <p class="team-achievement">Skill Development</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> K.Sheldon L.Davids<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Under 12</h3>
+                    <p class="team-achievement">Growing Talent</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> T.Koopman B.Oaker<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Under 14</h3>
+                    <p class="team-achievement">Talent Development</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> A.Allies A.Mesane<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Under 16</h3>
+                    <p class="team-achievement">Pre-Senior Development</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> D.Crouch R.Kruger B.Pitcher<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+                <div class="team-card">
+                    <h3 class="team-name">Girls Division</h3>
+                    <p class="team-achievement">Empowering Female Football</p>
+                    <div class="team-training">
+                        <strong>Coaches:</strong> A.LaVita M.Fowler Y.Salie<br>
+                        <strong>Training:</strong><br>
+                        Mondays & Wednesdays<br>
+                        17:00 - 18:30<br>
+                        Chukker Road Sports Complex
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sponsors Section -->
+    <section class="sponsors" id="sponsors">
+        <div class="section-header">
+            <h2 class="section-title">Our Sponsors</h2>
+            <p class="section-subtitle">Proud Partners</p>
+        </div>
+        <div class="sponsors-grid">
+            <!-- Sponsor 1 -->
+            <a href="https://www.facebook.com/profile.php?id=61579935906575" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <img src="sponsors/sponsor1-logo.png" alt="Sponsor 1" class="sponsor-logo" loading="lazy">
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <!--<div class="sponsor-name">Sponsor Name 1</div>-->
+                <div class="sponsor-category">Kit Sponsor</div>
+            </a>
+            
+            <!-- Sponsor 2 -->
+            <a href="https://primosport.net/" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <img src="sponsors/sponsor2-logo.png" alt="Sponsor 2" class="sponsor-logo" loading="lazy">
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <!--<div class="sponsor-name">Sponsor Name 2</div>-->
+                <div class="sponsor-category">Kit Supplier</div>
+            </a>
+            
+            <!-- Sponsor 3 -->
+            <a href="https://yma-consulting.co.za/" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <img src="sponsors/sponsor3-logo.png" alt="Sponsor 3" class="sponsor-logo" loading="lazy">
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <!-- <div class="sponsor-name">Sponsor Name 3</div> -->
+                <div class="sponsor-category">Kit Sponsor</div>
+            </a>
+            
+            <!-- Sponsor 4 -->
+            <a href="https://dcexperts.co.za/" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <img src="sponsors/sponsor4-logo.png" alt="Sponsor 4" class="sponsor-logo" loading="lazy">
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <!-- <div class="sponsor-name">Sponsor Name 4</div> -->
+                <div class="sponsor-category">Kit Sponsor</div>
+            </a>
+            
+            <!-- Sponsor 5 -->
+            <a href="https://www.sponsor5website.com" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <!-- <img src="sponsors/sponsor5-logo.png" alt="Sponsor 5" class="sponsor-logo" loading="lazy"> -->
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <div class="sponsor-name">Sponsor Name 5</div>
+                <div class="sponsor-category">Official Partner</div>
+            </a>
+            
+            <!-- Sponsor 6 -->
+            <a href="https://www.sponsor6website.com" target="_blank" rel="noopener noreferrer" class="sponsor-card">
+                <!-- Option 1: Use logo image (uncomment and add your logo file) -->
+                <!-- <img src="sponsors/sponsor6-logo.png" alt="Sponsor 6" class="sponsor-logo" loading="lazy"> -->
+                
+                <!-- Option 2: Use text name (remove when using logo) -->
+                <div class="sponsor-name">Sponsor Name 6</div>
+                <div class="sponsor-category">Official Partner</div>
+            </a>
+        </div>
+        
+        <div class="become-sponsor">
+            <h3>Become a Sponsor</h3>
+            <p>Partner with Wolverhampton FC and support Cape Town's premier football club. Contact us to explore sponsorship opportunities.</p>
+            <a href="#contact" class="sponsor-button">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="register">
+        <div class="cta-content">
+            <h2 class="cta-title">Join The Pack</h2>
+            <p class="cta-text">Ready to be part of a winning tradition? Register now for the 2026 season and experience what it means to be a Wolverhampton player.</p>
+            <a href="#" class="cta-button">Membership Form</a>
+			<a href="#" class="cta-button">Membership Fees</a>
+			<a href="#" class="cta-button">Club 100</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>📞 082 437 5842</p>
+                <p>✉️ wolvesfcct60@gmail.com</p>
+                <p>📍 Chukker Road Sports Complex<br>Wetton, Cape Town</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#teams">Teams</a>
+                <a href="#news">Latest News</a>
+				<a href="#matches">Match Hub</a>
+                <a href="#history">Club History</a>
+                <a href="#register">Online Registration</a>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <a href="https://www.facebook.com/groups/28898039139">Facebook</a>
+                <a href="https://www.instagram.com/wolverhampton_capetown_fc/">Instagram</a>
+                <a href="https://www.tiktok.com/@wolverhampton.cpt">TikTok</a>
+            </div>
+            <div class="footer-section">
+                <h3>Training Times</h3>
+                <p><strong>Seniors:</strong> Mon & Wed 18:00</p>
+                <p><strong>Juniors:</strong> Tue & Thu 17:00</p>
+                <p><strong>Youth:</strong> Sat 09:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Wolverhampton Football Club Cape Town. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to nav
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.na

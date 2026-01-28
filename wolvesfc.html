@@ -1287,7 +1287,20 @@
             });
         });
 
-        // Add scroll effect to nav
+          // Add scroll effect to nav
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.na
+            const nav = document.querySelector('.nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>

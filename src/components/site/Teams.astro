@@ -1,0 +1,39 @@
+---
+import type { TeamGroup } from '../../data/types';
+import { teamGroups as defaultGroups } from '../../data/teams';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+	groups?: TeamGroup[];
+}
+
+const { groups = defaultGroups } = Astro.props;
+---
+
+<section id="teams" class="bg-wolves-dark-gray px-8 py-20 md:py-24">
+	<SectionHeading title="Our Teams" />
+	{
+		groups.map((group) => (
+			<div class="mx-auto mb-16 max-w-[87.5rem] last:mb-0">
+				<h3 class="font-oswald mb-8 text-center text-2xl font-bold uppercase tracking-widest text-wolves-gold">
+					{group.heading}
+				</h3>
+				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{group.teams.map((team) => (
+						<div class="rounded-xl border-l-4 border-wolves-gold bg-wolves-black p-10 transition-all duration-300 hover:translate-x-2 hover:border-l-8">
+							<h4 class="font-oswald mb-4 text-2xl font-bold uppercase tracking-widest">{team.name}</h4>
+							<p class="mb-3 font-semibold text-wolves-gold">{team.tagline}</p>
+							{team.extraTaglines?.map((line) => (
+								<p class="mb-3 font-semibold text-wolves-gold">{line}</p>
+							))}
+							<div
+								class="text-sm leading-relaxed text-white/70 [&_strong]:text-white/90"
+								set:html={team.detailHtml}
+							/>
+						</div>
+					))}
+				</div>
+			</div>
+		))
+	}
+</section>

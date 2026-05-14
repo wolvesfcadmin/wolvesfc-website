@@ -1,0 +1,99 @@
+---
+const links = [
+	{ href: '#home', label: 'Home' },
+	{ href: '#impact', label: 'Impact' },
+	{ href: '#teams', label: 'Teams' },
+	{ href: '#news', label: 'News' },
+	{ href: '#matches', label: 'Matches' },
+	{ href: '#sponsors', label: 'Sponsors' },
+	{ href: '#history', label: 'History' },
+	{ href: '#contact', label: 'Contact' },
+] as const;
+---
+
+<header
+	id="site-header"
+	class="animate-slide-down fixed top-0 z-[1000] w-full border-b-2 border-wolves-gold bg-wolves-black/95 backdrop-blur-md transition-shadow duration-300"
+>
+	<div class="mx-auto flex max-w-[87.5rem] items-center justify-between px-8 py-5">
+		<a href="#home" class="flex items-center gap-4 no-underline">
+			<img
+				src="/cdfa-logo.png"
+				alt="CDFA Logo"
+				width="120"
+				height="55"
+				class="h-14 w-auto drop-shadow-[2px_2px_8px_rgba(253,185,19,0.3)] transition-transform duration-300 hover:scale-105"
+				loading="eager"
+				decoding="async"
+			/>
+			<span
+				class="font-bebas hidden max-w-[14rem] text-sm uppercase tracking-[0.2em] text-white/90 sm:max-w-none sm:text-base md:inline lg:text-xl"
+			>
+				Affiliated to Cape District Football Association
+			</span>
+		</a>
+		<nav>
+			<ul
+				id="nav-links"
+				class="fixed right-[-100%] top-20 z-[1000] flex flex-col gap-6 border-l-2 border-wolves-gold bg-wolves-black/98 p-8 transition-[right] duration-300 md:static md:flex md:flex-row md:gap-10 md:border-0 md:bg-transparent md:p-0"
+			>
+				{
+					links.map(({ href, label }) => (
+						<li>
+							<a
+								href={href}
+								class="nav-link relative text-sm font-semibold uppercase tracking-wide text-white no-underline transition-colors duration-300 after:absolute after:bottom-[-5px] after:left-0 after:h-0.5 after:w-0 after:bg-wolves-gold after:transition-[width] after:duration-300 hover:text-wolves-gold hover:after:w-full md:text-[0.95rem]"
+							>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<button
+			type="button"
+			id="menu-toggle"
+			class="flex cursor-pointer flex-col gap-1.5 md:hidden"
+			aria-label="Open menu"
+			aria-expanded="false"
+			aria-controls="nav-links"
+		>
+			<span class="h-0.5 w-6 bg-wolves-gold transition-colors"></span>
+			<span class="h-0.5 w-6 bg-wolves-gold transition-colors"></span>
+			<span class="h-0.5 w-6 bg-wolves-gold transition-colors"></span>
+		</button>
+	</div>
+</header>
+
+<script>
+	const menuToggle = document.getElementById('menu-toggle');
+	const navLinks = document.getElementById('nav-links');
+	const header = document.getElementById('site-header');
+
+	function setOpen(open: boolean) {
+		if (!navLinks || !menuToggle) return;
+		navLinks.classList.toggle('right-0', open);
+		navLinks.classList.toggle('right-[-100%]', !open);
+		menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+		menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+	}
+
+	menuToggle?.addEventListener('click', () => {
+		const open = navLinks?.classList.contains('right-[-100%]') ?? false;
+		setOpen(open);
+	});
+
+	navLinks?.querySelectorAll('a').forEach((link) => {
+		link.addEventListener('click', () => setOpen(false));
+	});
+
+	window.addEventListener('scroll', () => {
+		if (!header) return;
+		if (window.scrollY > 100) {
+			header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+		} else {
+			header.style.boxShadow = 'none';
+		}
+	});
+</script>

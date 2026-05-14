@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+	--color-wolves-gold: #fdb913;
+	--color-wolves-black: #0e0e0e;
+	--color-wolves-orange: #ff6b35;
+	--color-wolves-dark-gray: #1a1a1a;
+	--color-wolves-light-gray: #f5f5f5;
+	--color-accent-blue: #00a8e8;
+
+	--font-bebas: "Bebas Neue", ui-sans-serif, system-ui, sans-serif;
+	--font-oswald: "Oswald", ui-sans-serif, system-ui, sans-serif;
+	--font-barlow: "Barlow", ui-sans-serif, system-ui, sans-serif;
+
+	--animate-slide-down: slide-down 0.6s ease-out;
+	--animate-fade-in-up: fade-in-up 0.8s ease-out backwards;
+	--animate-pulse-gold: pulse-gold 3s ease-in-out infinite;
+}
+
+@keyframes slide-down {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in-up {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes pulse-gold {
+	0%,
+	100% {
+		transform: scale(1);
+		box-shadow: 0 20px 60px rgba(253, 185, 19, 0.4);
+	}
+	50% {
+		transform: scale(1.05);
+		box-shadow: 0 25px 80px rgba(253, 185, 19, 0.6);
+	}
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+	[id] {
+		scroll-margin-top: 5.5rem;
+	}
+	body {
+		@apply bg-wolves-black text-white antialiased overflow-x-hidden font-barlow;
+	}
+}

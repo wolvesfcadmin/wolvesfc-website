@@ -1,0 +1,48 @@
+---
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section id="matches" class="bg-wolves-black px-8 py-20 md:py-24">
+	<SectionHeading title="Match Hub" subtitle="Fixtures, Results & Standings" />
+	<div class="mx-auto max-w-[87.5rem] px-0">
+		<div
+			class="rounded-xl border-2 border-wolves-gold bg-wolves-dark-gray p-10 text-center md:p-12"
+		>
+			<h3
+				class="font-oswald mb-4 text-2xl font-semibold uppercase tracking-widest text-white md:text-3xl"
+			>
+				View Our Fixtures & League Standings
+			</h3>
+			<p class="mb-8 text-lg text-white/80">
+				Check out all our match schedules, results, and league table positions on the CDFA League
+				Republic platform.
+			</p>
+			<a
+				href="https://cdfa.leaguerepublic.com/index.html"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-block rounded-full bg-gradient-to-br from-wolves-gold to-wolves-orange px-10 py-4 font-oswald text-lg font-semibold uppercase tracking-widest text-wolves-black no-underline shadow-[0_10px_30px_rgba(253,185,19,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(253,185,19,0.5)]"
+			>
+				View Match Hub & Standings
+			</a>
+			<div class="mt-10 flex flex-wrap justify-center gap-8 text-center">
+				<div>
+					<div class="mb-2 text-3xl" aria-hidden="true">📅</div>
+					<div class="text-sm text-white/70">Fixtures</div>
+				</div>
+				<div>
+					<div class="mb-2 text-3xl" aria-hidden="true">⚽</div>
+					<div class="text-sm text-white/70">Results</div>
+				</div>
+				<div>
+					<div class="mb-2 text-3xl" aria-hidden="true">📊</div>
+					<div class="text-sm text-white/70">Standings</div>
+				</div>
+				<div>
+					<div class="mb-2 text-3xl" aria-hidden="true">📈</div>
+					<div class="text-sm text-white/70">Statistics</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

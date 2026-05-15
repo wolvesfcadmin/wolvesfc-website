@@ -1,38 +1,49 @@
 ---
-import type { NewsItem } from '../../data/types';
-import { newsItems as defaultNews } from '../../data/news';
+import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
 
-interface Props {
-	items?: NewsItem[];
-}
+// Fetch the news items from Sanity, ordering the newest ones first
+const newsItems = await sanityClient.fetch(`
+  *[_type == "news"] | order(date desc) {
+    title,
+    date,
+    excerpt,
+    "imageSrc": image.asset->url,
+    "emoji": emojiFallback
+  }
+`);
 
-const { items = defaultNews } = Astro.props;
+// Helper function to turn the raw "2026-02-21" database format into "February 2026"
+const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+};
 ---
 
 <section id="news" class="bg-wolves-black px-8 py-20 md:py-24">
 	<SectionHeading title="Latest News" subtitle="Stay Updated" />
 	<div class="mx-auto grid max-w-[87.5rem] gap-8 md:grid-cols-2 lg:grid-cols-3">
 		{
-			items.map((item) => (
+			newsItems.map((item) => (
 				<article class="group cursor-pointer overflow-hidden rounded-xl border border-wolves-gold/10 bg-wolves-dark-gray transition-all duration-300 hover:-translate-y-2 hover:border-wolves-gold hover:shadow-[0_20px_40px_rgba(253,185,19,0.2)]">
 					<div class="relative flex h-[200px] items-center justify-center overflow-hidden bg-gradient-to-br from-wolves-dark-gray to-wolves-black text-5xl after:absolute after:inset-0 after:bg-gradient-to-br after:from-transparent after:to-wolves-gold/10">
 						{item.imageSrc ? (
 							<img
 								src={item.imageSrc}
-								alt={item.imageAlt ?? ''}
+								alt={item.title}
 								class="relative z-[1] max-h-32 w-auto object-contain"
 								loading="lazy"
 								decoding="async"
 							/>
 						) : (
 							<span class="relative z-[1]" aria-hidden="true">
-								{item.emoji}
+								{item.emoji || '⚽'}
 							</span>
 						)}
 					</div>
 					<div class="p-6">
-						<div class="mb-3 text-sm uppercase tracking-wide text-wolves-gold">{item.date}</div>
+						<div class="mb-3 text-sm uppercase tracking-wide text-wolves-gold">{formatDate(item.date)}</div>
 						<h3 class="font-oswald mb-3 text-xl font-semibold leading-snug">{item.title}</h3>
 						<p class="text-base leading-relaxed text-white/80">{item.excerpt}</p>
 					</div>

@@ -1,35 +1,44 @@
 ---
-import type { SponsorItem } from '../../data/types';
-import { sponsorItems as defaultSponsors } from '../../data/sponsors';
+import { sanityClient } from '../../lib/sanity';
 import { fundingPriorities, trustRegistration } from '../../data/fundingPriorities';
 import SectionHeading from './SectionHeading.astro';
 
-interface Props {
-	sponsors?: SponsorItem[];
-}
-
-const { sponsors = defaultSponsors } = Astro.props;
+// Fetch the sponsors directly from Sanity
+const sponsors = await sanityClient.fetch(`
+  *[_type == "sponsor"] | order(companyName asc) {
+    companyName,
+    website,
+    tier,
+    "logoUrl": logo.asset->url
+  }
+`);
 ---
 
 <section id="sponsors" class="bg-wolves-black px-8 py-20 md:py-24">
 	<SectionHeading title="Our Sponsors" subtitle="Proud Partners" />
-	<div class="mx-auto grid max-w-[87.5rem] grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
+	
+    <div class="mx-auto grid max-w-[87.5rem] grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
 		{
 			sponsors.map((s) => (
 				<a
-					href={s.href}
+					href={s.website}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="group flex min-h-[150px] flex-col items-center justify-center rounded-xl border border-wolves-gold/10 bg-wolves-dark-gray p-10 text-center text-inherit no-underline transition-all duration-300 hover:-translate-y-2 hover:border-wolves-gold hover:shadow-[0_15px_40px_rgba(253,185,19,0.2)]"
 				>
-					<img
-						src={s.logoSrc}
-						alt={s.logoAlt}
-						class="mb-4 max-h-20 w-full max-w-full object-contain grayscale brightness-0 invert transition-[filter] duration-300 group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0"
-						loading="lazy"
-					/>
+                    {s.logoUrl && (
+                        <img
+                            src={s.logoUrl}
+                            alt={s.companyName}
+                            class="mb-4 max-h-20 w-full max-w-full object-contain grayscale brightness-0 invert transition-[filter] duration-300 group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0"
+                            loading="lazy"
+                        />
+                    )}
+                    {!s.logoUrl && (
+                        <div class="mb-4 font-oswald text-lg font-bold text-white">{s.companyName}</div>
+                    )}
 					<span class="font-oswald text-sm font-semibold uppercase tracking-wide text-wolves-gold">
-						{s.category}
+						{s.tier}
 					</span>
 				</a>
 			))

@@ -1,13 +1,33 @@
 ---
-import type { TeamGroup } from '../../data/types';
-import { teamGroups as defaultGroups } from '../../data/teams';
+import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
 
-interface Props {
-	groups?: TeamGroup[];
-}
+// Fetch all teams from Sanity, including the image URL
+const allTeams = await sanityClient.fetch(`
+  *[_type == "team"] | order(teamName asc) {
+    teamName,
+    category,
+    subtitle,
+    "imageUrl": image.asset->url,
+    details
+  }
+`);
 
-const { groups = defaultGroups } = Astro.props;
+// Group the flat Sanity data into the structured array your layout expects
+const groups = [
+	{
+		heading: 'Executive Members',
+		teams: allTeams.filter((t: any) => t.category === 'Executive Members'),
+	},
+	{
+		heading: 'Senior Teams',
+		teams: allTeams.filter((t: any) => t.category === 'Senior Teams'),
+	},
+	{
+		heading: 'Junior Teams',
+		teams: allTeams.filter((t: any) => t.category === 'Junior Teams'),
+	},
+].filter((group) => group.teams.length > 0);
 ---
 
 <section id="teams" class="bg-wolves-dark-gray px-8 py-20 md:py-24">
@@ -19,17 +39,30 @@ const { groups = defaultGroups } = Astro.props;
 					{group.heading}
 				</h3>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{group.teams.map((team) => (
-						<div class="rounded-xl border-l-4 border-wolves-gold bg-wolves-black p-10 transition-all duration-300 hover:translate-x-2 hover:border-l-8">
-							<h4 class="font-oswald mb-4 text-2xl font-bold uppercase tracking-widest">{team.name}</h4>
-							<p class="mb-3 font-semibold text-wolves-gold">{team.tagline}</p>
-							{team.extraTaglines?.map((line) => (
-								<p class="mb-3 font-semibold text-wolves-gold">{line}</p>
-							))}
-							<div
-								class="text-sm leading-relaxed text-white/70 [&_strong]:text-white/90"
-								set:html={team.detailHtml}
-							/>
+					{group.teams.map((team: any) => (
+						<div class="flex flex-row items-start justify-between gap-6 rounded-xl border-l-4 border-wolves-gold bg-wolves-black p-8 transition-all duration-300 hover:translate-x-2 hover:border-l-8">
+                            
+                            <div class="flex-1">
+							    <h4 class="font-oswald mb-4 text-2xl font-bold uppercase tracking-widest">{team.teamName}</h4>
+							
+                                {team.subtitle && (
+                                    <p class="mb-3 font-semibold text-wolves-gold">{team.subtitle}</p>
+                                )}
+                                
+							    <div
+								    class="text-sm leading-relaxed text-white/70 [&_strong]:text-white/90"
+								    set:html={team.details ? team.details.replace(/\n/g, '<br />') : ''}
+							    />
+                            </div>
+
+                            {team.imageUrl && (
+                                <img 
+                                    src={team.imageUrl} 
+                                    alt={team.teamName} 
+                                    class="h-40 w-28 shrink-0 rounded-lg border border-wolves-gold/20 object-cover shadow-lg"
+                                    loading="lazy" 
+                                />
+                            )}
 						</div>
 					))}
 				</div>

@@ -1,51 +1,34 @@
 ---
+import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
+
+// Fetch all stats from Sanity, ordering by when they were created
+const stats = await sanityClient.fetch(`
+  *[_type == "stat"] | order(_createdAt asc) {
+    title,
+    achievements
+  }
+`);
 ---
 
 <section class="border-t-[3px] border-wolves-gold bg-wolves-dark-gray px-8 py-16">
 	<SectionHeading title="Achievements" />
 	<div class="mx-auto grid max-w-[87.5rem] gap-12 md:grid-cols-2 lg:grid-cols-4">
-		<div
-			class="rounded-xl border border-wolves-gold/20 bg-wolves-gold/5 p-8 text-center transition-all duration-300 hover:-translate-y-2.5 hover:border-wolves-gold hover:bg-wolves-gold/10"
-		>
-			<div class="font-bebas mb-2 text-6xl leading-none text-wolves-gold">2023</div>
-			<div class="font-oswald text-sm uppercase tracking-widest text-white/80">
-				<div>- PL Winners</div>
-				<div>- PL Grand Challenge Winners</div>
-				<div>- CDFA Club of the Year</div>
+		{stats.map((stat: any) => (
+			<div
+				class="rounded-xl border border-wolves-gold/20 bg-wolves-gold/5 p-8 text-center transition-all duration-300 hover:-translate-y-2.5 hover:border-wolves-gold hover:bg-wolves-gold/10"
+			>
+                {/* Dynamically scale text size based on string length to handle both "2025" and "CAF Licensed Coaches" smoothly */}
+				<div class={`font-bebas mb-2 text-wolves-gold ${stat.title.length > 5 ? 'text-3xl leading-tight md:text-4xl' : 'text-6xl leading-none'}`}>
+                    {stat.title}
+                </div>
+                
+				<div class="font-oswald text-sm uppercase leading-relaxed tracking-widest text-white/80">
+					{stat.achievements && stat.achievements.map((item: string) => (
+                        <div class="mb-1 last:mb-0">- {item}</div>
+                    ))}
+				</div>
 			</div>
-		</div>
-		<div
-			class="rounded-xl border border-wolves-gold/20 bg-wolves-gold/5 p-8 text-center transition-all duration-300 hover:-translate-y-2.5 hover:border-wolves-gold hover:bg-wolves-gold/10"
-		>
-			<div class="font-bebas mb-2 text-3xl leading-tight text-wolves-gold md:text-4xl">
-				CAF Licensed Coaches
-			</div>
-			<div class="font-oswald text-sm uppercase tracking-widest text-white/80">
-				<div>- CAF C</div>
-				<div>- CAF D</div>
-			</div>
-		</div>
-		<div
-			class="rounded-xl border border-wolves-gold/20 bg-wolves-gold/5 p-8 text-center transition-all duration-300 hover:-translate-y-2.5 hover:border-wolves-gold hover:bg-wolves-gold/10"
-		>
-			<div class="font-bebas mb-2 text-6xl leading-none text-wolves-gold">100+</div>
-			<div class="font-oswald text-sm uppercase tracking-widest text-white/80">
-				Active Players
-			</div>
-		</div>
-		<div
-			class="rounded-xl border border-wolves-gold/20 bg-wolves-gold/5 p-8 text-center transition-all duration-300 hover:-translate-y-2.5 hover:border-wolves-gold hover:bg-wolves-gold/10"
-		>
-			<div class="font-bebas mb-2 text-6xl leading-none text-wolves-gold">2025</div>
-			<div class="font-oswald text-xs uppercase leading-relaxed tracking-widest text-white/80">
-				<div>- U12 Red League Winners</div>
-				<div>- U12 Orange League Winners</div>
-				<div>- U14 Red League & KO Winners</div>
-				<div>- U14 Orange League, Grand Challenge and KO Winners</div>
-				<div>- CDFA Junior Team of the Year - U14</div>
-				<div>- CDFA Club of the Year</div>
-			</div>
-		</div>
+        ))}
 	</div>
 </section>

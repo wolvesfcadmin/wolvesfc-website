@@ -26,20 +26,26 @@ export const team = defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
+    // NEW FIELD: Display Order
+    defineField({
+      name: 'displayOrder',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Enter a number (1, 2, 3) to control the order this team appears within its category.',
+    }),
     defineField({
       name: 'subtitle',
       title: 'Subtitle / Person Name',
       type: 'string',
       description: 'e.g., "R. Smithdorf (Snr)" or "Foundation Skills"',
     }),
-    // NEW FIELD ADDED HERE:
     defineField({
       name: 'image',
       title: 'Team Photo / Headshot',
       type: 'image',
       description: 'Optional: Upload a squad photo or executive profile picture.',
       options: {
-        hotspot: true, // Allows you to crop the image inside Sanity
+        hotspot: true,
       },
     }),
     defineField({
@@ -53,7 +59,7 @@ export const team = defineType({
     select: {
       title: 'teamName',
       subtitle: 'category',
-      media: 'image', // Shows the thumbnail in the studio sidebar
+      media: 'image',
     },
   },
 })

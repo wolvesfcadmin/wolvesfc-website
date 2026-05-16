@@ -4,7 +4,7 @@ import SectionHeading from './SectionHeading.astro';
 
 // Fetch all teams from Sanity, including the image URL
 const allTeams = await sanityClient.fetch(`
-  *[_type == "team"] | order(teamName asc) {
+  *[_type == "team"] | order(displayOrder asc) {
     teamName,
     category,
     subtitle,

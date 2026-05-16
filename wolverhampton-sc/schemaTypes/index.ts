@@ -7,5 +7,6 @@ import { impact } from './impact'
 import { funding } from './funding'
 import { registration } from './registration'
 import { joinCta } from './joinCta'
+import { footer } from './footer'
 
-export const schemaTypes = [sponsor, news, team, stat, history, impact, funding, registration, joinCta]
+export const schemaTypes = [sponsor, news, team, stat, history, impact, funding, registration, joinCta, footer]

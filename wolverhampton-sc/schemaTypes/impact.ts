@@ -12,6 +12,16 @@ export const impact = defineType({
       description: 'e.g., "300 Active Members" or "90% from underserved communities"',
       validation: (Rule) => Rule.required(),
     }),
+    // NEW FIELD: Image Upload
+    defineField({
+      name: 'image',
+      title: 'Impact Photo (Optional)',
+      type: 'image',
+      description: 'Optional: Upload a photo highlighting this community metric.',
+      options: {
+        hotspot: true, // Allows admins to crop the focal point inside Sanity
+      },
+    }),
     defineField({
       name: 'content',
       title: 'Details / Paragraph',
@@ -30,6 +40,7 @@ export const impact = defineType({
     select: {
       title: 'title',
       subtitle: 'displayOrder',
+      media: 'image', // Shows the thumbnail in the studio list
     },
   },
 })

@@ -2,11 +2,12 @@
 import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
 
-// Fetch impact blocks, ordering them by the displayOrder number you set in Sanity
+// Fetch impact blocks, now including the image URL
 const impactBlocks = await sanityClient.fetch(`
   *[_type == "impact"] | order(displayOrder asc) {
     title,
-    content
+    content,
+    "imageUrl": image.asset->url
   }
 `);
 ---
@@ -20,6 +21,17 @@ const impactBlocks = await sanityClient.fetch(`
                 <h3 class="font-oswald mb-4 text-xl font-bold uppercase tracking-widest text-wolves-gold">
                     {block.title}
                 </h3>
+                
+                {/* NEW OPTIONAL IMAGE BLOCK */}
+                {block.imageUrl && (
+                    <img 
+                        src={block.imageUrl} 
+                        alt={block.title} 
+                        class="mb-6 max-h-80 w-full rounded-xl border border-white/5 object-cover shadow-md"
+                        loading="lazy"
+                    />
+                )}
+
                 <div 
                     class="leading-relaxed"
                     set:html={block.content ? block.content.replace(/\n/g, '<br />') : ''}

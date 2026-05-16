@@ -51,7 +51,7 @@ export const fundingPriorities: FundingPriority[] = [
 ];
 
 export const trustRegistration = {
-	npo: '139-715 NPO',
+	npo: '139-715',
 	pbo: '930074041',
 	npc: '9170028261',
 } as const;

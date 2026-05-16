@@ -4,5 +4,7 @@ import { team } from './team'
 import { stat } from './stat'
 import { history } from './history'
 import { impact } from './impact'
+import { funding } from './funding'
+import { registration } from './registration'
 
-export const schemaTypes = [sponsor, news, team, stat, history, impact]
+export const schemaTypes = [sponsor, news, team, stat, history, impact, funding, registration]

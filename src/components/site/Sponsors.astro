@@ -1,6 +1,5 @@
 ---
 import { sanityClient } from '../../lib/sanity';
-import { fundingPriorities, trustRegistration } from '../../data/fundingPriorities';
 import SectionHeading from './SectionHeading.astro';
 
 // Fetch the sponsors directly from Sanity
@@ -12,6 +11,29 @@ const sponsors = await sanityClient.fetch(`
     "logoUrl": logo.asset->url
   }
 `);
+
+// Fetch the funding priorities from Sanity
+const fundingData = await sanityClient.fetch(`
+  *[_type == "funding"] | order(displayOrder asc) {
+    title,
+    amountZar,
+    amountApproxGbp,
+    note
+  }
+`);
+
+// Fetch the single registration document
+// We use [0] because we only expect one document of this type to ever exist
+const registrationData = await sanityClient.fetch(`
+  *[_type == "registration"][0] {
+    npo,
+    pbo,
+    npc
+  }
+`);
+
+// Provide a fallback in case the Sanity document hasn't been created yet
+const reg = registrationData || { npo: 'Pending', pbo: 'Pending', npc: 'Pending' };
 ---
 
 <section id="sponsors" class="bg-wolves-black px-8 py-20 md:py-24">
@@ -19,7 +41,7 @@ const sponsors = await sanityClient.fetch(`
 	
     <div class="mx-auto grid max-w-[87.5rem] grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
 		{
-			sponsors.map((s) => (
+			sponsors.map((s: any) => (
 				<a
 					href={s.website}
 					target="_blank"
@@ -56,13 +78,13 @@ const sponsors = await sanityClient.fetch(`
 			</p>
 			<div class="flex flex-wrap justify-center gap-4 text-sm text-white/90 md:justify-start">
 				<span class="rounded-full border border-wolves-gold/40 px-4 py-1.5 font-semibold">
-					NPO {trustRegistration.npo}
+					NPO {reg.npo}
 				</span>
 				<span class="rounded-full border border-wolves-gold/40 px-4 py-1.5 font-semibold">
-					PBO {trustRegistration.pbo}
+					PBO {reg.pbo}
 				</span>
 				<span class="rounded-full border border-wolves-gold/40 px-4 py-1.5 font-semibold">
-					NPC {trustRegistration.npc}
+					NPC {reg.npc}
 				</span>
 			</div>
 		</div>
@@ -79,7 +101,7 @@ const sponsors = await sanityClient.fetch(`
 
 			<ul class="mx-auto mb-10 grid max-w-5xl gap-6 md:grid-cols-2">
 				{
-					fundingPriorities.map((fp) => (
+					fundingData.map((fp: any) => (
 						<li class="rounded-lg border border-white/10 bg-wolves-black/50 p-6 text-left">
 							<p class="font-oswald text-lg font-semibold uppercase tracking-wide text-wolves-gold">
 								{fp.title}

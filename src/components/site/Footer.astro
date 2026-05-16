@@ -40,9 +40,9 @@ const data = footerData || {
 			<p class="mb-2 text-white/70">📞 {data.phone}</p>
 			<p class="mb-2 text-white/70">✉️ {data.email}</p>
 			<p 
-                class="text-white/70"
-                set:html={data.physicalAddress ? data.physicalAddress.replace(/\n/g, '<br />') : ''}
-            />
+    			class="text-white/70"
+    			set:html={data.physicalAddress ? `📍 ${data.physicalAddress.replace(/\n/g, '<br />')}` : ''}
+			/>
 			<p class="mt-4 text-sm text-white/50">
 				{data.registeredAddress}
 			</p>

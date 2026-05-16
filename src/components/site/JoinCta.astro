@@ -1,29 +1,44 @@
+---
+import { sanityClient } from '../../lib/sanity';
+
+// Fetch the single CTA document
+const ctaData = await sanityClient.fetch(`
+  *[_type == "joinCta"][0] {
+    heading,
+    description,
+    buttons
+  }
+`);
+
+// Provide a fallback in case the Sanity document hasn't been created yet
+const data = ctaData || {
+    heading: 'Join The Pack',
+    description: 'Ready to be part of a winning tradition? Register now for the 2026 season and experience what it means to be a Wolverhampton player.',
+    buttons: [
+        { label: 'Membership Form', url: '#' },
+        { label: 'Membership Fees', url: '#' },
+        { label: 'Club 100', url: '#' }
+    ]
+};
+---
+
 <section id="register" class="bg-gradient-to-br from-wolves-gold to-wolves-orange px-8 py-20 text-center md:py-24">
 	<div class="mx-auto max-w-3xl">
-		<h2 class="font-bebas mb-6 text-4xl tracking-widest text-wolves-black md:text-6xl">Join The Pack</h2>
+		<h2 class="font-bebas mb-6 text-4xl tracking-widest text-wolves-black md:text-6xl">
+            {data.heading}
+        </h2>
 		<p class="mb-10 text-xl text-wolves-black/90">
-			Ready to be part of a winning tradition? Register now for the 2026 season and experience what it
-			means to be a Wolverhampton player.
+			{data.description}
 		</p>
 		<div class="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
-			<a
-				href="#"
-				class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
-			>
-				Membership Form
-			</a>
-			<a
-				href="#"
-				class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
-			>
-				Membership Fees
-			</a>
-			<a
-				href="#"
-				class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
-			>
-				Club 100
-			</a>
+            {data.buttons && data.buttons.map((btn: any) => (
+			    <a
+				    href={btn.url || '#'}
+				    class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
+			    >
+				    {btn.label}
+			    </a>
+            ))}
 		</div>
 	</div>
 </section>

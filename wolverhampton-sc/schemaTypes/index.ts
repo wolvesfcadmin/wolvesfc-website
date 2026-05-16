@@ -6,5 +6,6 @@ import { history } from './history'
 import { impact } from './impact'
 import { funding } from './funding'
 import { registration } from './registration'
+import { joinCta } from './joinCta'
 
-export const schemaTypes = [sponsor, news, team, stat, history, impact, funding, registration]
+export const schemaTypes = [sponsor, news, team, stat, history, impact, funding, registration, joinCta]

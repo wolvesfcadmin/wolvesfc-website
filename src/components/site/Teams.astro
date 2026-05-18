@@ -55,11 +55,13 @@ const groups = [
 							    />
                             </div>
 
+                            {/* TEAM IMAGE WITH LIGHTBOX TRIGGER */}
                             {team.imageUrl && (
                                 <img 
                                     src={team.imageUrl} 
                                     alt={team.teamName} 
-                                    class="h-40 w-28 shrink-0 rounded-lg border border-wolves-gold/20 object-cover shadow-lg"
+                                    class="h-40 w-28 shrink-0 rounded-lg border border-wolves-gold/20 object-cover shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
+                                    onclick={`openTeamModal('${team.imageUrl}')`}
                                     loading="lazy" 
                                 />
                             )}
@@ -69,4 +71,67 @@ const groups = [
 			</div>
 		))
 	}
+
+    {/* TEAMS IMAGE LIGHTBOX MODAL */}
+    <div 
+    	id="teamModal" 
+    	class="fixed inset-0 z-[100] hidden items-center justify-center bg-wolves-black/95 p-4 opacity-0 transition-opacity duration-300"
+	>
+        <button 
+       		onclick="closeTeamModal()" 
+       		class="absolute right-6 top-6 text-5xl text-wolves-gold transition-transform hover:scale-110 hover:text-white focus:outline-none"
+      		aria-label="Close modal"
+   		>
+        	&times;
+        </button>
+    	<img 
+        	id="teamModalImage" 
+        	src="" 
+        	alt="Enlarged view" 
+        	class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-[0_0_50px_rgba(0,0,0,0.5)]" 
+    	/>
+	</div>
 </section>
+
+<script is:inline>
+    const tmModal = document.getElementById('teamModal');
+    const tmModalImg = document.getElementById('teamModalImage');
+
+    function openTeamModal(imgSrc) {
+        tmModalImg.src = imgSrc;
+        tmModal.classList.remove('hidden');
+        tmModal.classList.add('flex');
+        
+        setTimeout(() => {
+            tmModal.classList.remove('opacity-0');
+            tmModal.classList.add('opacity-100');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeTeamModal() {
+        tmModal.classList.remove('opacity-100');
+        tmModal.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            tmModal.classList.add('hidden');
+            tmModal.classList.remove('flex');
+            tmModalImg.src = ''; 
+        }, 300);
+        
+        document.body.style.overflow = '';
+    }
+
+    if (tmModal) {
+        tmModal.addEventListener('click', (e) => {
+            if (e.target === tmModal) closeTeamModal();
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && tmModal && !tmModal.classList.contains('hidden')) {
+            closeTeamModal();
+        }
+    });
+</script>

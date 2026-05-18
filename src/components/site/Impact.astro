@@ -22,12 +22,13 @@ const impactBlocks = await sanityClient.fetch(`
                     {block.title}
                 </h3>
                 
-                {/* NEW OPTIONAL IMAGE BLOCK */}
+                {/* OPTIONAL IMAGE BLOCK WITH LIGHTBOX TRIGGER */}
                 {block.imageUrl && (
                     <img 
                         src={block.imageUrl} 
                         alt={block.title} 
-                        class="mb-6 max-h-80 w-full rounded-xl border border-white/5 object-cover shadow-md"
+                        class="mb-6 max-h-80 w-full rounded-xl border border-white/5 object-cover shadow-md cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                        onclick={`openImpactModal('${block.imageUrl}')`}
                         loading="lazy"
                     />
                 )}
@@ -40,4 +41,66 @@ const impactBlocks = await sanityClient.fetch(`
         ))}
 	</div>
 
+    {/* IMPACT IMAGE LIGHTBOX MODAL */}
+    <div 
+    	id="impactModal" 
+    	class="fixed inset-0 z-[100] hidden items-center justify-center bg-wolves-black/95 p-4 opacity-0 transition-opacity duration-300"
+	>
+        <button 
+       		onclick="closeImpactModal()" 
+       		class="absolute right-6 top-6 text-5xl text-wolves-gold transition-transform hover:scale-110 hover:text-white focus:outline-none"
+      		aria-label="Close modal"
+   		>
+        	&times;
+        </button>
+    	<img 
+        	id="impactModalImage" 
+        	src="" 
+        	alt="Enlarged view" 
+        	class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-[0_0_50px_rgba(0,0,0,0.5)]" 
+    	/>
+	</div>
 </section>
+
+<script is:inline>
+    const impModal = document.getElementById('impactModal');
+    const impModalImg = document.getElementById('impactModalImage');
+
+    function openImpactModal(imgSrc) {
+        impModalImg.src = imgSrc;
+        impModal.classList.remove('hidden');
+        impModal.classList.add('flex');
+        
+        setTimeout(() => {
+            impModal.classList.remove('opacity-0');
+            impModal.classList.add('opacity-100');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeImpactModal() {
+        impModal.classList.remove('opacity-100');
+        impModal.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            impModal.classList.add('hidden');
+            impModal.classList.remove('flex');
+            impModalImg.src = ''; 
+        }, 300);
+        
+        document.body.style.overflow = '';
+    }
+
+    if (impModal) {
+        impModal.addEventListener('click', (e) => {
+            if (e.target === impModal) closeImpactModal();
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && impModal && !impModal.classList.contains('hidden')) {
+            closeImpactModal();
+        }
+    });
+</script>

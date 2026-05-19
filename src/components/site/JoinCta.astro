@@ -1,7 +1,7 @@
 ---
 import { sanityClient } from '../../lib/sanity';
 
-// Fetch the single CTA document
+// Fetch the single CTA document, now including the new action fields
 const ctaData = await sanityClient.fetch(`
   *[_type == "joinCta"][0] {
     heading,
@@ -10,14 +10,13 @@ const ctaData = await sanityClient.fetch(`
   }
 `);
 
-// Provide a fallback in case the Sanity document hasn't been created yet
 const data = ctaData || {
     heading: 'Join The Pack',
     description: 'Ready to be part of a winning tradition? Register now for the 2026 season and experience what it means to be a Wolverhampton player.',
     buttons: [
-        { label: 'Membership Form', url: '#' },
-        { label: 'Membership Fees', url: '#' },
-        { label: 'Club 100', url: '#' }
+        { label: 'Membership Form', actionType: 'link', url: '#' },
+        { label: 'Membership Fees', actionType: 'modal', modalContent: 'Placeholder fee info...' },
+        { label: 'Club 100', actionType: 'modal', modalContent: 'Placeholder Club 100 info...' }
     ]
 };
 ---
@@ -31,14 +30,105 @@ const data = ctaData || {
 			{data.description}
 		</p>
 		<div class="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
-            {data.buttons && data.buttons.map((btn: any) => (
-			    <a
-				    href={btn.url || '#'}
-				    class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
-			    >
-				    {btn.label}
-			    </a>
-            ))}
+            
+            {data.buttons && data.buttons.map((btn: any) => {
+                // If it's a modal button, render a button that triggers the JS pop-up
+                if (btn.actionType === 'modal') {
+                    return (
+                        <button
+                            data-title={btn.label}
+                            data-content={btn.modalContent ? btn.modalContent.replace(/\n/g, '<br />') : ''}
+                            onclick="openCtaModal(this)"
+                            class="inline-block cursor-pointer rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] focus:outline-none"
+                        >
+                            {btn.label}
+                        </button>
+                    )
+                } 
+                // Otherwise, render a standard URL link
+                else {
+                    return (
+                        <a
+                            href={btn.url || '#'}
+                            target={btn.url && btn.url.startsWith('http') ? '_blank' : '_self'}
+                            rel="noopener noreferrer"
+                            class="inline-block rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white no-underline shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)]"
+                        >
+                            {btn.label}
+                        </a>
+                    )
+                }
+            })}
+
 		</div>
 	</div>
+
+    {/* TEXT LIGHTBOX MODAL */}
+    <div 
+    	id="ctaModal" 
+    	class="fixed inset-0 z-[100] hidden items-center justify-center bg-wolves-black/95 p-4 text-left opacity-0 transition-opacity duration-300"
+	>
+        <div class="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray p-8 shadow-2xl md:p-12">
+            <button 
+                onclick="closeCtaModal()" 
+                class="absolute right-6 top-6 text-4xl text-wolves-gold transition-transform hover:scale-110 hover:text-white focus:outline-none"
+                aria-label="Close modal"
+            >
+                &times;
+            </button>
+            <h3 id="ctaModalTitle" class="font-oswald mb-6 pr-8 text-3xl font-bold uppercase tracking-widest text-wolves-gold"></h3>
+            <div id="ctaModalContent" class="text-lg leading-relaxed text-white/85 [&_strong]:text-wolves-gold"></div>
+        </div>
+	</div>
 </section>
+
+<script is:inline>
+    const cModal = document.getElementById('ctaModal');
+    const cModalTitle = document.getElementById('ctaModalTitle');
+    const cModalContent = document.getElementById('ctaModalContent');
+
+    function openCtaModal(element) {
+        // Grab the text securely from the button's data attributes
+        const title = element.getAttribute('data-title');
+        const content = element.getAttribute('data-content');
+        
+        cModalTitle.innerText = title;
+        cModalContent.innerHTML = content;
+        
+        cModal.classList.remove('hidden');
+        cModal.classList.add('flex');
+        
+        setTimeout(() => {
+            cModal.classList.remove('opacity-0');
+            cModal.classList.add('opacity-100');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCtaModal() {
+        cModal.classList.remove('opacity-100');
+        cModal.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            cModal.classList.add('hidden');
+            cModal.classList.remove('flex');
+            cModalTitle.innerText = ''; 
+            cModalContent.innerHTML = ''; 
+        }, 300);
+        
+        document.body.style.overflow = '';
+    }
+
+    if (cModal) {
+        cModal.addEventListener('click', (e) => {
+            if (e.target === cModal) closeCtaModal();
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && cModal && !cModal.classList.contains('hidden')) {
+            closeCtaModal();
+        }
+    });
+</script>

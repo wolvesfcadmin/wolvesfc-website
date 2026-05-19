@@ -39,7 +39,8 @@ export const joinCta = defineType({
               options: {
                 list: [
                   { title: 'Link to a URL (e.g., Google Form)', value: 'link' },
-                  { title: 'Open a Text Modal (e.g., Fees Info)', value: 'modal' }
+                  { title: 'Open a Text Modal (e.g., Fees Info)', value: 'modal' },
+                  { title: 'Open an Image Modal (e.g., Flyer/Poster)', value: 'image' }
                 ],
                 layout: 'radio'
               },
@@ -54,10 +55,18 @@ export const joinCta = defineType({
             },
             {
               name: 'modalContent',
-              title: 'Modal Pop-up Content',
+              title: 'Modal Pop-up Text',
               type: 'text',
               description: 'Type the text to appear in the pop-up. Use Enter for line breaks.',
               hidden: ({ parent }) => parent?.actionType !== 'modal'
+            },
+            {
+              name: 'modalImage',
+              title: 'Modal Pop-up Image',
+              type: 'image',
+              description: 'Upload an image (like a flyer or poster) to display in the pop-up.',
+              options: { hotspot: true },
+              hidden: ({ parent }) => parent?.actionType !== 'image'
             }
           ]
         }

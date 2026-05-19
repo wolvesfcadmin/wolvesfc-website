@@ -1,12 +1,18 @@
 ---
 import { sanityClient } from '../../lib/sanity';
 
-// Fetch the single CTA document, now including the new action fields
+// Fetch the single CTA document, now including the image URL
 const ctaData = await sanityClient.fetch(`
   *[_type == "joinCta"][0] {
     heading,
     description,
-    buttons
+    "buttons": buttons[]{
+      label,
+      actionType,
+      url,
+      modalContent,
+      "imageUrl": modalImage.asset->url
+    }
   }
 `);
 
@@ -32,7 +38,8 @@ const data = ctaData || {
 		<div class="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
             
             {data.buttons && data.buttons.map((btn: any) => {
-                // If it's a modal button, render a button that triggers the JS pop-up
+                
+                // 1. Render a button that triggers a TEXT modal
                 if (btn.actionType === 'modal') {
                     return (
                         <button
@@ -45,7 +52,21 @@ const data = ctaData || {
                         </button>
                     )
                 } 
-                // Otherwise, render a standard URL link
+                
+                // 2. Render a button that triggers an IMAGE modal
+                else if (btn.actionType === 'image') {
+                    return (
+                        <button
+                            data-img={btn.imageUrl}
+                            onclick="openCtaImageModal(this)"
+                            class="inline-block cursor-pointer rounded-full bg-wolves-black px-10 py-4 font-oswald text-base font-semibold uppercase tracking-widest text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] focus:outline-none"
+                        >
+                            {btn.label}
+                        </button>
+                    )
+                }
+                
+                // 3. Otherwise, render a standard URL link
                 else {
                     return (
                         <a
@@ -80,15 +101,35 @@ const data = ctaData || {
             <div id="ctaModalContent" class="text-lg leading-relaxed text-white/85 [&_strong]:text-wolves-gold"></div>
         </div>
 	</div>
+
+    {/* IMAGE LIGHTBOX MODAL */}
+    <div 
+    	id="ctaImgModal" 
+    	class="fixed inset-0 z-[100] hidden items-center justify-center bg-wolves-black/95 p-4 opacity-0 transition-opacity duration-300"
+	>
+        <button 
+       		onclick="closeCtaImageModal()" 
+       		class="absolute right-6 top-6 text-5xl text-wolves-gold transition-transform hover:scale-110 hover:text-white focus:outline-none"
+      		aria-label="Close modal"
+   		>
+        	&times;
+        </button>
+    	<img 
+        	id="ctaImgModalTarget" 
+        	src="" 
+        	alt="Enlarged view" 
+        	class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-[0_0_50px_rgba(0,0,0,0.5)]" 
+    	/>
+	</div>
 </section>
 
 <script is:inline>
+    // --- TEXT MODAL LOGIC ---
     const cModal = document.getElementById('ctaModal');
     const cModalTitle = document.getElementById('ctaModalTitle');
     const cModalContent = document.getElementById('ctaModalContent');
 
     function openCtaModal(element) {
-        // Grab the text securely from the button's data attributes
         const title = element.getAttribute('data-title');
         const content = element.getAttribute('data-content');
         
@@ -125,10 +166,51 @@ const data = ctaData || {
             if (e.target === cModal) closeCtaModal();
         });
     }
+
+    // --- IMAGE MODAL LOGIC ---
+    const cImgModal = document.getElementById('ctaImgModal');
+    const cImgModalTarget = document.getElementById('ctaImgModalTarget');
+
+    function openCtaImageModal(element) {
+        const imgSrc = element.getAttribute('data-img');
+        if(!imgSrc) return; // Fail gracefully if no image is uploaded yet
+        
+        cImgModalTarget.src = imgSrc;
+        cImgModal.classList.remove('hidden');
+        cImgModal.classList.add('flex');
+        
+        setTimeout(() => {
+            cImgModal.classList.remove('opacity-0');
+            cImgModal.classList.add('opacity-100');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCtaImageModal() {
+        cImgModal.classList.remove('opacity-100');
+        cImgModal.classList.add('opacity-0');
+        
+        setTimeout(() => {
+            cImgModal.classList.add('hidden');
+            cImgModal.classList.remove('flex');
+            cImgModalTarget.src = ''; 
+        }, 300);
+        
+        document.body.style.overflow = '';
+    }
+
+    if (cImgModal) {
+        cImgModal.addEventListener('click', (e) => {
+            if (e.target === cImgModal) closeCtaImageModal();
+        });
+    }
     
+    // --- GLOBAL ESCAPE KEY LOGIC ---
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && cModal && !cModal.classList.contains('hidden')) {
-            closeCtaModal();
+        if (e.key === 'Escape') {
+            if (cModal && !cModal.classList.contains('hidden')) closeCtaModal();
+            if (cImgModal && !cImgModal.classList.contains('hidden')) closeCtaImageModal();
         }
     });
 </script>

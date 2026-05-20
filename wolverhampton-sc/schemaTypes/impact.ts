@@ -12,15 +12,13 @@ export const impact = defineType({
       description: 'e.g., "300 Active Members" or "90% from underserved communities"',
       validation: (Rule) => Rule.required(),
     }),
-    // NEW FIELD: Image Upload
+    // UPDATED FIELD: Array of Images
     defineField({
-      name: 'image',
-      title: 'Impact Photo (Optional)',
-      type: 'image',
-      description: 'Optional: Upload a photo highlighting this community metric.',
-      options: {
-        hotspot: true, // Allows admins to crop the focal point inside Sanity
-      },
+      name: 'images',
+      title: 'Impact Photos (Optional)',
+      type: 'array',
+      description: 'Optional: Upload one or more photos highlighting this metric. Multiple photos will display as a slideshow.',
+      of: [{ type: 'image', options: { hotspot: true } }],
     }),
     defineField({
       name: 'content',
@@ -40,7 +38,7 @@ export const impact = defineType({
     select: {
       title: 'title',
       subtitle: 'displayOrder',
-      media: 'image', // Shows the thumbnail in the studio list
+      media: 'images.0', // Shows the first image in the array as the studio thumbnail
     },
   },
 })

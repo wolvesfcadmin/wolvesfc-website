@@ -2,12 +2,12 @@
 import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
 
-// Fetch impact blocks, now including the image URL
+// Fetch impact blocks, now pulling an array of image URLs
 const impactBlocks = await sanityClient.fetch(`
   *[_type == "impact"] | order(displayOrder asc) {
     title,
     content,
-    "imageUrl": image.asset->url
+    "imageUrls": images[].asset->url
   }
 `);
 ---
@@ -22,15 +22,19 @@ const impactBlocks = await sanityClient.fetch(`
                     {block.title}
                 </h3>
                 
-                {/* OPTIONAL IMAGE BLOCK WITH LIGHTBOX TRIGGER */}
-                {block.imageUrl && (
-                    <img 
-                        src={block.imageUrl} 
-                        alt={block.title} 
-                        class="mb-6 max-h-80 w-full rounded-xl border border-white/5 object-cover shadow-md cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-                        onclick={`openImpactModal('${block.imageUrl}')`}
-                        loading="lazy"
-                    />
+                {/* OPTIONAL MULTI-IMAGE SLIDER BLOCK */}
+                {block.imageUrls && block.imageUrls.length > 0 && (
+                    <div class="impact-slider relative mb-6 aspect-video w-full overflow-hidden rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray/50 shadow-2xl">
+                        {block.imageUrls.map((url: string, index: number) => (
+                            <img 
+                                src={url} 
+                                alt={block.title} 
+                                class={`impact-slide absolute inset-0 h-full w-full object-contain cursor-pointer transition-transform transition-opacity duration-1000 ease-in-out hover:scale-[1.02] ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                                onclick={`openImpactModal('${url}')`}
+                                loading={index === 0 ? "eager" : "lazy"}
+                            />
+                        ))}
+                    </div>
                 )}
 
                 <div 
@@ -63,6 +67,7 @@ const impactBlocks = await sanityClient.fetch(`
 </section>
 
 <script is:inline>
+    // --- MODAL LOGIC ---
     const impModal = document.getElementById('impactModal');
     const impModalImg = document.getElementById('impactModalImage');
 
@@ -102,5 +107,29 @@ const impactBlocks = await sanityClient.fetch(`
         if (e.key === 'Escape' && impModal && !impModal.classList.contains('hidden')) {
             closeImpactModal();
         }
+    });
+
+    // --- SLIDESHOW LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Find every impact slider on the page separately
+        const sliders = document.querySelectorAll('.impact-slider');
+        
+        sliders.forEach(slider => {
+            const slides = slider.querySelectorAll('.impact-slide');
+            if (slides.length <= 1) return; // Do nothing if there's only 1 image
+
+            let currentSlide = 0;
+            
+            // Set 10-second interval isolated to this specific slider block
+            setInterval(() => {
+                slides[currentSlide].classList.remove('opacity-100', 'z-10');
+                slides[currentSlide].classList.add('opacity-0', 'z-0');
+                
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                slides[currentSlide].classList.remove('opacity-0', 'z-0');
+                slides[currentSlide].classList.add('opacity-100', 'z-10');
+            }, 10000);
+        });
     });
 </script>

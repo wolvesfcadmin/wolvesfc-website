@@ -17,30 +17,36 @@ const impactBlocks = await sanityClient.fetch(`
 	
     <div class="mx-auto max-w-[87.5rem] space-y-12 text-lg leading-relaxed text-white/85">
         {impactBlocks.map((block: any) => (
-            <div class="rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray/40 p-8 md:p-10">
-                <h3 class="font-oswald mb-4 text-xl font-bold uppercase tracking-widest text-wolves-gold">
-                    {block.title}
-                </h3>
+            <div class="flex flex-col items-center gap-8 rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray/40 p-8 md:flex-row md:items-start md:p-10 lg:gap-12">
+                {/* UPDATED: Added Flexbox classes to control the side-by-side layout */}
                 
-                {/* OPTIONAL MULTI-IMAGE SLIDER BLOCK */}
+                {/* LEFT SIDE: Heading and Text */}
+                <div class="flex-1 w-full">
+                    <h3 class="font-oswald mb-4 text-xl font-bold uppercase tracking-widest text-wolves-gold">
+                        {block.title}
+                    </h3>
+                    <div 
+                        class="leading-relaxed"
+                        set:html={block.content ? block.content.replace(/\n/g, '<br />') : ''}
+                    />
+                </div>
+
+                {/* RIGHT SIDE: Image Slider */}
                 {block.imageUrls && block.imageUrls.length > 0 && (
-                    <div class="impact-slider relative mb-6 aspect-video w-full overflow-hidden rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray/50 shadow-2xl">
-                        {block.imageUrls.map((url: string, index: number) => (
-                            <img 
-                                src={url} 
-                                alt={block.title} 
-                                class={`impact-slide absolute inset-0 h-full w-full object-contain cursor-pointer transition-transform transition-opacity duration-1000 ease-in-out hover:scale-[1.02] ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-                                onclick={`openImpactModal('${url}')`}
-                                loading={index === 0 ? "eager" : "lazy"}
-                            />
-                        ))}
+                    <div class="flex-1 w-full">
+                        <div class="impact-slider relative aspect-video w-full overflow-hidden rounded-2xl border border-wolves-gold/20 bg-wolves-dark-gray/50 shadow-2xl">
+                            {block.imageUrls.map((url: string, index: number) => (
+                                <img 
+                                    src={url} 
+                                    alt={block.title} 
+                                    class={`impact-slide absolute inset-0 h-full w-full object-contain cursor-pointer transition-transform transition-opacity duration-1000 ease-in-out hover:scale-[1.02] ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                                    onclick={`openImpactModal('${url}')`}
+                                    loading={index === 0 ? "eager" : "lazy"}
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
-
-                <div 
-                    class="leading-relaxed"
-                    set:html={block.content ? block.content.replace(/\n/g, '<br />') : ''}
-                />
             </div>
         ))}
 	</div>

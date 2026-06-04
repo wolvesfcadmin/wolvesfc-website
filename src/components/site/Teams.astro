@@ -2,13 +2,14 @@
 import { sanityClient } from '../../lib/sanity';
 import SectionHeading from './SectionHeading.astro';
 
-// Fetch all teams from Sanity, including the image URL
+// 1. UPDATED QUERY: Fetch the sliderSpeed from Sanity
 const allTeams = await sanityClient.fetch(`
   *[_type == "team"] | order(displayOrder asc) {
     teamName,
     category,
     subtitle,
-    "imageUrl": image.asset->url,
+    sliderSpeed,
+    "imageUrls": images[].asset->url,
     details
   }
 `);
@@ -55,15 +56,23 @@ const groups = [
 							    />
                             </div>
 
-                            {/* TEAM IMAGE WITH LIGHTBOX TRIGGER */}
-                            {team.imageUrl && (
-                                <img 
-                                    src={team.imageUrl} 
-                                    alt={team.teamName} 
-                                    class="h-40 w-28 shrink-0 rounded-lg border border-wolves-gold/20 object-cover shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
-                                    onclick={`openTeamModal('${team.imageUrl}')`}
-                                    loading="lazy" 
-                                />
+                            {/* TEAM IMAGE SLIDER WITH LIGHTBOX TRIGGER */}
+                            {team.imageUrls && team.imageUrls.length > 0 && (
+                                <div 
+                                    class="team-slider relative h-40 w-28 shrink-0 overflow-hidden rounded-lg border border-wolves-gold/20 shadow-lg"
+                                    data-speed={team.sliderSpeed ? team.sliderSpeed * 1000 : 10000}
+                                >
+                                    {/* 2. UPDATED HTML: Moved the comment safely inside the div! */}
+                                    {team.imageUrls.map((url: string, index: number) => (
+                                        <img 
+                                            src={url} 
+                                            alt={team.teamName} 
+                                            class={`team-slide absolute inset-0 h-full w-full object-cover cursor-pointer transition-transform transition-opacity duration-1000 ease-in-out hover:scale-105 ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                                            onclick={`openTeamModal('${url}')`}
+                                            loading={index === 0 ? "eager" : "lazy"} 
+                                        />
+                                    ))}
+                                </div>
                             )}
 						</div>
 					))}
@@ -94,6 +103,7 @@ const groups = [
 </section>
 
 <script is:inline>
+    // --- MODAL LOGIC ---
     const tmModal = document.getElementById('teamModal');
     const tmModalImg = document.getElementById('teamModalImage');
 
@@ -133,5 +143,30 @@ const groups = [
         if (e.key === 'Escape' && tmModal && !tmModal.classList.contains('hidden')) {
             closeTeamModal();
         }
+    });
+
+    // --- SLIDESHOW LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const sliders = document.querySelectorAll('.team-slider');
+        
+        sliders.forEach(slider => {
+            const slides = slider.querySelectorAll('.team-slide');
+            if (slides.length <= 1) return; 
+
+            let currentSlide = 0;
+            
+            // 3. UPDATED SCRIPT: Dynamically grab the specific speed for THIS slider
+            const speed = parseInt(slider.getAttribute('data-speed')) || 10000;
+            
+            setInterval(() => {
+                slides[currentSlide].classList.remove('opacity-100', 'z-10');
+                slides[currentSlide].classList.add('opacity-0', 'z-0');
+                
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                slides[currentSlide].classList.remove('opacity-0', 'z-0');
+                slides[currentSlide].classList.add('opacity-100', 'z-10');
+            }, speed); 
+        });
     });
 </script>

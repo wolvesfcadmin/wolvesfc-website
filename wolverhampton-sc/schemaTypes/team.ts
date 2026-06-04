@@ -39,27 +39,34 @@ export const team = defineType({
       type: 'string',
       description: 'e.g., "R. Smithdorf (Snr)" or "Foundation Skills"',
     }),
+    // UPDATED FIELD: Array of Images
     defineField({
-      name: 'image',
-      title: 'Team Photo / Headshot',
-      type: 'image',
-      description: 'Optional: Upload a squad photo or executive profile picture.',
-      options: {
-        hotspot: true,
-      },
+      name: 'images',
+      title: 'Team Photos / Headshots',
+      type: 'array',
+      description: 'Optional: Upload one or more squad photos or executive profile pictures. Multiple photos will display as a 10-second slideshow.',
+      of: [{ type: 'image', options: { hotspot: true } }],
     }),
     defineField({
       name: 'details',
       title: 'Details / Training Info',
       type: 'text',
       description: 'Add coaching info, training times, or role descriptions. Hitting Enter here will create line breaks on the website.',
-    })
+    }),
+    defineField({
+      name: 'sliderSpeed',
+      title: 'Slider Transition Time (in seconds)',
+      type: 'number',
+      description: 'How many seconds should each image display before transitioning? (Leave blank to default to 10 seconds)',
+      initialValue: 10,
+      validation: (Rule) => Rule.min(2).max(60), // Prevents admins from setting it so fast it causes seizures!
+    }),
   ],
   preview: {
     select: {
       title: 'teamName',
       subtitle: 'category',
-      media: 'image',
+      media: 'images.0', // Shows the first image in the array as the studio thumbnail
     },
   },
 })
